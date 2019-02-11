@@ -23,7 +23,7 @@ options.rootPath = {
 options.theme = {
     root  : options.rootPath.theme,
     css   : options.rootPath.theme + 'css/',
-    sass  : options.rootPath.theme + 'sass/',
+    sass  : options.rootPath.theme + 'scss/',
     js    : options.rootPath.theme + 'js/'
 };
 
@@ -113,7 +113,8 @@ gulp.task('default', ['build']);
 // #################
 // Build everything.
 // #################
-gulp.task('build', ['styles:production', 'styleguide', 'lint']);
+// gulp.task('build', ['styles:production', 'styleguide', 'lint']);
+gulp.task('build', ['styles:production', 'lint']);
 
 // ##########
 // Build CSS.
@@ -205,7 +206,7 @@ gulp.task('lint:sass-with-fail', function() {
 // ##############################
 // Watch for changes and rebuild.
 // ##############################
-gulp.task('watch', ['browser-sync', 'watch:lint-and-styleguide', 'watch:js']);
+gulp.task('watch', ['browser-sync', 'watch:lint', 'watch:js']);
 
 gulp.task('browser-sync', ['watch:css'], function() {
     if (!options.drupalURL) {
@@ -221,11 +222,10 @@ gulp.task('watch:css', ['styles'], function() {
     return gulp.watch(options.theme.sass + '**/*.scss', options.gulpWatchOptions, ['styles']);
 });
 
-gulp.task('watch:lint-and-styleguide', ['styleguide', 'lint:sass'], function() {
+gulp.task('watch:lint', ['lint:sass'], function() {
     return gulp.watch([
-        options.theme.sass + '**/*.scss',
-        options.theme.sass + '**/*.twig'
-    ], options.gulpWatchOptions, ['styleguide', 'lint:sass']);
+        options.theme.sass + '**/*.scss'
+    ], options.gulpWatchOptions, ['lint:sass']);
 });
 
 gulp.task('watch:js', ['lint:js'], function() {
